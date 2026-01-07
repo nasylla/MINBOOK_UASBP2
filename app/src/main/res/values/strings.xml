@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MINBOOK</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="home">Home</string>
+    <string name="buku">Buku</string>
+    <string name="peminjaman">Peminjaman</string>
+    <string name="simpan">Simpan</string>
+    <string name="batal">Batal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="greeting">Hi, admin!</string>
+    <string name="jumlah_buku">Jumlah Buku</string>
+    <string name="peminjaman_aktif">Peminjaman Aktif</string>
+</resources>

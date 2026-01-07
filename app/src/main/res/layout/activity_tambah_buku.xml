@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/blue_primary"
+    android:padding="24dp"
+    tools:context=".TambahBukuActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Tambah Buku"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:id="@+id/flCover"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_upload_cover">
+
+        <ImageView
+            android:id="@+id/imgCoverPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tvUploadHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Upload Cover Buku"
+            android:textColor="@android:color/black" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/labelJudul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/flCover"
+        android:layout_marginTop="24dp"
+        android:text="Judul Buku"
+        android:textColor="@android:color/white" />
+
+    <EditText
+        android:id="@+id/etJudulBuku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelJudul"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edittext_white"
+        android:hint="Masukkan judul buku"
+        android:padding="12dp" />
+
+    <TextView
+        android:id="@+id/labelPenulis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etJudulBuku"
+        android:layout_marginTop="16dp"
+        android:text="Penulis Buku"
+        android:textColor="@android:color/white" />
+
+    <EditText
+        android:id="@+id/etPenulisBuku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelPenulis"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edittext_white"
+        android:hint="Masukkan penulis buku"
+        android:padding="12dp" />
+
+    <TextView
+        android:id="@+id/labelKategori"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPenulisBuku"
+        android:layout_marginTop="16dp"
+        android:text="Kategori Buku"
+        android:textColor="@android:color/white" />
+
+    <RadioGroup
+        android:id="@+id/rgKategori"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelKategori"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbFiksi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fiksi"
+            android:textColor="@android:color/white" />
+
+        <RadioButton
+            android:id="@+id/rbNonFiksi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Non-Fiksi"
+            android:textColor="@android:color/white" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/labelTanggal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rgKategori"
+        android:layout_marginTop="16dp"
+        android:text="Tanggal Terbit"
+        android:textColor="@android:color/white" />
+
+    <EditText
+        android:id="@+id/etTanggalTerbit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelTanggal"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_edittext_white"
+        android:drawableEnd="@drawable/ic_kalender"
+        android:hint="mm/dd/yyyy"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/btnBatal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etTanggalTerbit"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_button_red"
+        android:text="Batal"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/btnSimpan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnBatal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_button_green"
+        android:text="Simpan"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>
