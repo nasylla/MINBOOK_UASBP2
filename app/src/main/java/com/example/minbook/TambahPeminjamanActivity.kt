@@ -5,14 +5,12 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.minbook.databinding.ActivityTambahPeminjamanBinding
 import com.example.minbook.db.MinbookDatabase
 import com.example.minbook.db.Peminjaman
 import com.example.minbook.db.PeminjamanRepository
@@ -20,20 +18,11 @@ import java.util.Calendar
 
 class TambahPeminjamanActivity : AppCompatActivity() {
 
-    private lateinit var etNamaPeminjam: EditText
-    private lateinit var tvPilihBuku: TextView
-    private lateinit var etTanggalPinjam: EditText
-    private lateinit var etTanggalKembali: EditText
-    private lateinit var etPetugas: EditText
-    private lateinit var spinnerStatus: Spinner
-    private lateinit var btnSimpan: Button
-    private lateinit var btnBatal: Button
-
+    private lateinit var binding: ActivityTambahPeminjamanBinding
     private lateinit var peminjamanViewModel: PeminjamanViewModel
 
     private var selectedBukuId: Int? = null
 
-    // Launcher untuk menerima hasil dari PilihBukuActivity
     private val pilihBukuLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -43,30 +32,19 @@ class TambahPeminjamanActivity : AppCompatActivity() {
             val selectedBukuTitle = data?.getStringExtra("SELECTED_BOOK_TITLE")
 
             if (selectedBukuId != -1 && selectedBukuTitle != null) {
-                tvPilihBuku.text = selectedBukuTitle
+                binding.tvPilihBuku.text = selectedBukuTitle
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tambah_peminjaman)
+        binding = ActivityTambahPeminjamanBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initViews()
         initViewModel()
         setupStatusSpinner()
         setupActionListeners()
-    }
-
-    private fun initViews() {
-        etNamaPeminjam = findViewById(R.id.etNamaPeminjam)
-        tvPilihBuku = findViewById(R.id.tvPilihBuku)
-        etTanggalPinjam = findViewById(R.id.etTanggalPinjam)
-        etTanggalKembali = findViewById(R.id.etTanggalKembali)
-        etPetugas = findViewById(R.id.etPetugas)
-        spinnerStatus = findViewById(R.id.spinnerStatus)
-        btnSimpan = findViewById(R.id.btnSimpan)
-        btnBatal = findViewById(R.id.btnBatal)
     }
 
     private fun initViewModel() {
@@ -82,20 +60,20 @@ class TambahPeminjamanActivity : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-        spinnerStatus.adapter = statusAdapter
+        binding.spinnerStatus.adapter = statusAdapter
     }
 
     private fun setupActionListeners() {
-        btnBatal.setOnClickListener { finish() }
-        btnSimpan.setOnClickListener { savePeminjaman() }
+        binding.btnBatal.setOnClickListener { finish() }
+        binding.btnSimpan.setOnClickListener { savePeminjaman() }
 
-        tvPilihBuku.setOnClickListener {
+        binding.tvPilihBuku.setOnClickListener {
             val intent = Intent(this, PilihBukuActivity::class.java)
             pilihBukuLauncher.launch(intent)
         }
 
-        etTanggalPinjam.setOnClickListener { showDatePickerDialog(etTanggalPinjam) }
-        etTanggalKembali.setOnClickListener { showDatePickerDialog(etTanggalKembali) }
+        binding.etTanggalPinjam.setOnClickListener { showDatePickerDialog(binding.etTanggalPinjam) }
+        binding.etTanggalKembali.setOnClickListener { showDatePickerDialog(binding.etTanggalKembali) }
     }
 
     private fun showDatePickerDialog(editText: EditText) {
@@ -107,17 +85,17 @@ class TambahPeminjamanActivity : AppCompatActivity() {
     }
 
     private fun savePeminjaman() {
-        val namaPeminjam = etNamaPeminjam.text.toString().trim()
-        val tanggalPinjam = etTanggalPinjam.text.toString().trim()
-        val tanggalKembali = etTanggalKembali.text.toString().trim()
-        val petugas = etPetugas.text.toString().trim()
+        val namaPeminjam = binding.etNamaPeminjam.text.toString().trim()
+        val tanggalPinjam = binding.etTanggalPinjam.text.toString().trim()
+        val tanggalKembali = binding.etTanggalKembali.text.toString().trim()
+        val petugas = binding.etPetugas.text.toString().trim()
 
         if (namaPeminjam.isEmpty() || tanggalPinjam.isEmpty() || selectedBukuId == null) {
             Toast.makeText(this, "Nama, Judul Buku, dan Tanggal Pinjam harus diisi", Toast.LENGTH_LONG).show()
             return
         }
 
-        val status = spinnerStatus.selectedItem.toString()
+        val status = binding.spinnerStatus.selectedItem.toString()
 
         val peminjamanBaru = Peminjaman(
             namaPeminjam = namaPeminjam,

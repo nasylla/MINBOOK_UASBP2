@@ -4,12 +4,14 @@ import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.minbook.databinding.ActivityEditBukuBinding
 import com.example.minbook.db.Buku
 import com.example.minbook.db.BukuRepository
 import com.example.minbook.db.MinbookDatabase
@@ -17,16 +19,7 @@ import java.util.Calendar
 
 class EditBukuActivity : AppCompatActivity() {
 
-    private lateinit var etJudul: EditText
-    private lateinit var etPenulis: EditText
-    private lateinit var rgKategori: RadioGroup
-    private lateinit var etTanggalTerbit: EditText
-    private lateinit var flCover: FrameLayout
-    private lateinit var imgCoverPreview: ImageView
-    private lateinit var tvUploadHint: TextView
-    private lateinit var btnSimpan: Button
-    private lateinit var btnBatal: Button
-
+    private lateinit var binding: ActivityEditBukuBinding
     private lateinit var bukuViewModel: BukuViewModel
     private var selectedImageUri: Uri? = null
     private var currentBuku: Buku? = null
@@ -36,38 +29,22 @@ class EditBukuActivity : AppCompatActivity() {
     ) { uri: Uri? ->
         uri?.let {
             selectedImageUri = it
-            Glide.with(this).load(it).into(imgCoverPreview)
-            tvUploadHint.visibility = View.GONE
+            Glide.with(this).load(it).into(binding.imgCoverPreview)
+            binding.tvUploadHint.visibility = View.GONE
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_buku)
+        binding = ActivityEditBukuBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize Views
-        initViews()
-
-        // Initialize ViewModel
         initViewModel()
 
-        // Get data from intent and populate the form
         currentBuku = intent.getParcelableExtra("buku")
         currentBuku?.let { populateForm(it) }
 
         setupActionListeners()
-    }
-
-    private fun initViews() {
-        etJudul = findViewById(R.id.etJudulBuku)
-        etPenulis = findViewById(R.id.etPenulisBuku)
-        rgKategori = findViewById(R.id.rgKategori)
-        etTanggalTerbit = findViewById(R.id.etTanggalTerbit)
-        flCover = findViewById(R.id.flCover)
-        imgCoverPreview = findViewById(R.id.imgCoverPreview)
-        tvUploadHint = findViewById(R.id.tvUploadHint)
-        btnSimpan = findViewById(R.id.btnSimpan)
-        btnBatal = findViewById(R.id.btnBatal)
     }
 
     private fun initViewModel() {
@@ -78,48 +55,48 @@ class EditBukuActivity : AppCompatActivity() {
     }
 
     private fun populateForm(buku: Buku) {
-        etJudul.setText(buku.judul)
-        etPenulis.setText(buku.penulis)
-        etTanggalTerbit.setText(buku.tanggalTerbit)
+        binding.etJudulBuku.setText(buku.judul)
+        binding.etPenulisBuku.setText(buku.penulis)
+        binding.etTanggalTerbit.setText(buku.tanggalTerbit)
 
         if (buku.kategori == "Fiksi") {
-            rgKategori.check(R.id.rbFiksi)
+            binding.rgKategori.check(R.id.rbFiksi)
         } else {
-            rgKategori.check(R.id.rbNonFiksi)
+            binding.rgKategori.check(R.id.rbNonFiksi)
         }
 
         if (buku.cover.isNotBlank()) {
             selectedImageUri = buku.cover.toUri()
-            Glide.with(this).load(selectedImageUri).into(imgCoverPreview)
-            tvUploadHint.visibility = View.GONE
+            Glide.with(this).load(selectedImageUri).into(binding.imgCoverPreview)
+            binding.tvUploadHint.visibility = View.GONE
         }
     }
 
     private fun setupActionListeners() {
-        flCover.setOnClickListener { pickImageLauncher.launch("image/*") }
+        binding.flCover.setOnClickListener { pickImageLauncher.launch("image/*") }
 
-        etTanggalTerbit.setOnClickListener {
+        binding.etTanggalTerbit.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             DatePickerDialog(this, { _, y, m, d ->
-                etTanggalTerbit.setText("$d/${m + 1}/$y")
+                binding.etTanggalTerbit.setText("$d/${m + 1}/$y")
             }, year, month, day).show()
         }
 
-        btnBatal.setOnClickListener { finish() }
+        binding.btnBatal.setOnClickListener { finish() }
 
-        btnSimpan.setOnClickListener { updateBuku() }
+        binding.btnSimpan.setOnClickListener { updateBuku() }
     }
 
     private fun updateBuku() {
-        val judul = etJudul.text.toString().trim()
-        val penulis = etPenulis.text.toString().trim()
-        val selectedKategoriId = rgKategori.checkedRadioButtonId
+        val judul = binding.etJudulBuku.text.toString().trim()
+        val penulis = binding.etPenulisBuku.text.toString().trim()
+        val selectedKategoriId = binding.rgKategori.checkedRadioButtonId
         val kategori = if (selectedKategoriId != -1) findViewById<RadioButton>(selectedKategoriId).text.toString() else ""
-        val tanggalTerbit = etTanggalTerbit.text.toString().trim()
+        val tanggalTerbit = binding.etTanggalTerbit.text.toString().trim()
 
         if (judul.isBlank() || penulis.isBlank() || kategori.isBlank() || selectedImageUri == null) {
             Toast.makeText(this, "Semua kolom harus diisi dan cover dipilih", Toast.LENGTH_LONG).show()

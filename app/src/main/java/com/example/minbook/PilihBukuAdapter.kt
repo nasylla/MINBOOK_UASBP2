@@ -3,10 +3,9 @@ package com.example.minbook
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.minbook.databinding.ItemBukuBinding
 import com.example.minbook.db.Buku
 
 class PilihBukuAdapter(
@@ -14,37 +13,31 @@ class PilihBukuAdapter(
     private val onBukuSelected: (Buku) -> Unit
 ) : RecyclerView.Adapter<PilihBukuAdapter.PilihBukuViewHolder>() {
 
-    class PilihBukuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvJudulBuku: TextView = view.findViewById(R.id.tvJudulBuku)
-        val tvPenulis: TextView = view.findViewById(R.id.tvPenulis)
-        val tvKategori: TextView = view.findViewById(R.id.tvKategori)
-        val imgBuku: ImageView = view.findViewById(R.id.imgBuku)
-    }
+    inner class PilihBukuViewHolder(val binding: ItemBukuBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PilihBukuViewHolder {
-        // Menggunakan layout item_buku yang sudah ada
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_buku, parent, false)
-        // Menghilangkan tombol edit/delete agar tidak muncul di halaman pemilihan
-        view.findViewById<View>(R.id.btn_edit).visibility = View.GONE
-        view.findViewById<View>(R.id.btn_delete).visibility = View.GONE
-        return PilihBukuViewHolder(view)
+        val binding = ItemBukuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.btnEdit.visibility = View.GONE
+        binding.btnDelete.visibility = View.GONE
+        return PilihBukuViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PilihBukuViewHolder, position: Int) {
         val buku = bukuList[position]
 
-        holder.tvJudulBuku.text = buku.judul
-        holder.tvPenulis.text = buku.penulis
-        holder.tvKategori.text = "Kategori: ${buku.kategori}"
+        with(holder.binding) {
+            tvJudulBuku.text = buku.judul
+            tvPenulis.text = buku.penulis
+            tvKategori.text = "Kategori: ${buku.kategori}"
 
-        Glide.with(holder.itemView.context)
-            .load(buku.cover)
-            .placeholder(R.drawable.bg_card)
-            .into(holder.imgBuku)
+            Glide.with(holder.itemView.context)
+                .load(buku.cover)
+                .placeholder(R.drawable.bg_card)
+                .into(imgBuku)
 
-        holder.itemView.setOnClickListener {
-            onBukuSelected(buku)
+            holder.itemView.setOnClickListener {
+                onBukuSelected(buku)
+            }
         }
     }
 

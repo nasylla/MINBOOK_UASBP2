@@ -6,12 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.minbook.databinding.FragmentPeminjamanBinding
 import com.example.minbook.db.MinbookDatabase
 import com.example.minbook.db.Peminjaman
 import com.example.minbook.db.PeminjamanDetail
@@ -19,23 +18,24 @@ import com.example.minbook.db.PeminjamanRepository
 
 class PeminjamanFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentPeminjamanBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var peminjamanAdapter: PeminjamanAdapter
     private lateinit var peminjamanViewModel: PeminjamanViewModel
-    private lateinit var btnAddPeminjaman: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_peminjaman, container, false)
+    ): View {
+        _binding = FragmentPeminjamanBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.rvPeminjaman)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.rvPeminjaman.layoutManager = LinearLayoutManager(context)
 
         val editAction = { peminjaman: PeminjamanDetail ->
             val intent = Intent(activity, EditPeminjamanActivity::class.java).apply {
@@ -49,7 +49,7 @@ class PeminjamanFragment : Fragment() {
         }
 
         peminjamanAdapter = PeminjamanAdapter(emptyList(), editAction, deleteAction)
-        recyclerView.adapter = peminjamanAdapter
+        binding.rvPeminjaman.adapter = peminjamanAdapter
 
         val database = MinbookDatabase.getDatabase(requireContext())
         val repository = PeminjamanRepository(database.peminjamanDao())
@@ -60,8 +60,7 @@ class PeminjamanFragment : Fragment() {
             peminjamanAdapter.updateData(peminjamanList)
         }
 
-        btnAddPeminjaman = view.findViewById(R.id.btnAddPeminjaman)
-        btnAddPeminjaman.setOnClickListener {
+        binding.btnAddPeminjaman.setOnClickListener {
             val intent = Intent(activity, TambahPeminjamanActivity::class.java)
             startActivity(intent)
         }
@@ -90,5 +89,10 @@ class PeminjamanFragment : Fragment() {
         )
         peminjamanViewModel.delete(peminjaman)
         Toast.makeText(context, "Peminjaman berhasil dihapus", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

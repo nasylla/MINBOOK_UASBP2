@@ -1,5 +1,6 @@
 package com.example.minbook.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -23,6 +24,9 @@ interface PeminjamanDao {
 
     @Query("SELECT * FROM peminjaman ORDER BY tanggalPinjam DESC")
     fun getAllPeminjaman(): Flow<List<Peminjaman>>
+
+    @Query("SELECT COUNT(*) FROM peminjaman WHERE status = 'Dipinjam'")
+    fun getActivePeminjamanCount(): LiveData<Int>
 
     @Insert
     suspend fun insertPeminjaman(peminjaman: Peminjaman)

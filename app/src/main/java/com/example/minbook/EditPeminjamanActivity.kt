@@ -3,13 +3,11 @@ package com.example.minbook
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.minbook.databinding.ActivityEditPeminjamanBinding
 import com.example.minbook.db.MinbookDatabase
 import com.example.minbook.db.Peminjaman
 import com.example.minbook.db.PeminjamanDetail
@@ -18,40 +16,21 @@ import java.util.Calendar
 
 class EditPeminjamanActivity : AppCompatActivity() {
 
-    private lateinit var etNamaPeminjam: EditText
-    private lateinit var tvJudulBuku: TextView
-    private lateinit var etTanggalPinjam: EditText
-    private lateinit var etTanggalKembali: EditText
-    private lateinit var etPetugas: EditText
-    private lateinit var spinnerStatus: Spinner
-    private lateinit var btnSimpan: Button
-    private lateinit var btnBatal: Button
-
+    private lateinit var binding: ActivityEditPeminjamanBinding
     private lateinit var peminjamanViewModel: PeminjamanViewModel
     private var currentPeminjaman: PeminjamanDetail? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_peminjaman)
+        binding = ActivityEditPeminjamanBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initViews()
         initViewModel()
 
         currentPeminjaman = intent.getParcelableExtra("peminjaman")
         currentPeminjaman?.let { populateForm(it) }
 
         setupActionListeners()
-    }
-
-    private fun initViews() {
-        etNamaPeminjam = findViewById(R.id.etNamaPeminjam)
-        tvJudulBuku = findViewById(R.id.tvJudulBukuValue)
-        etTanggalPinjam = findViewById(R.id.etTanggalPinjam)
-        etTanggalKembali = findViewById(R.id.etTanggalKembali)
-        etPetugas = findViewById(R.id.etPetugas)
-        spinnerStatus = findViewById(R.id.spinnerStatus)
-        btnSimpan = findViewById(R.id.btnSimpan)
-        btnBatal = findViewById(R.id.btnBatal)
     }
 
     private fun initViewModel() {
@@ -62,29 +41,29 @@ class EditPeminjamanActivity : AppCompatActivity() {
     }
 
     private fun populateForm(peminjaman: PeminjamanDetail) {
-        etNamaPeminjam.setText(peminjaman.namaPeminjam)
-        tvJudulBuku.text = peminjaman.judul
-        etTanggalPinjam.setText(peminjaman.tanggalPinjam)
-        etTanggalKembali.setText(peminjaman.tanggalKembali ?: "")
-        etPetugas.setText(peminjaman.petugas)
+        binding.etNamaPeminjam.setText(peminjaman.namaPeminjam)
+        binding.tvJudulBukuValue.text = peminjaman.judul
+        binding.etTanggalPinjam.setText(peminjaman.tanggalPinjam)
+        binding.etTanggalKembali.setText(peminjaman.tanggalKembali ?: "")
+        binding.etPetugas.setText(peminjaman.petugas)
 
         val statusAdapter = ArrayAdapter.createFromResource(
             this, R.array.status_peminjaman, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerStatus.adapter = adapter
+            binding.spinnerStatus.adapter = adapter
         }
 
         val statusPosition = statusAdapter.getPosition(peminjaman.status)
-        spinnerStatus.setSelection(statusPosition)
+        binding.spinnerStatus.setSelection(statusPosition)
     }
 
     private fun setupActionListeners() {
-        btnBatal.setOnClickListener { finish() }
-        btnSimpan.setOnClickListener { updatePeminjaman() }
+        binding.btnBatal.setOnClickListener { finish() }
+        binding.btnSimpan.setOnClickListener { updatePeminjaman() }
 
-        etTanggalPinjam.setOnClickListener { showDatePickerDialog(etTanggalPinjam) }
-        etTanggalKembali.setOnClickListener { showDatePickerDialog(etTanggalKembali) }
+        binding.etTanggalPinjam.setOnClickListener { showDatePickerDialog(binding.etTanggalPinjam) }
+        binding.etTanggalKembali.setOnClickListener { showDatePickerDialog(binding.etTanggalKembali) }
     }
 
     private fun showDatePickerDialog(editText: EditText) {
@@ -95,11 +74,11 @@ class EditPeminjamanActivity : AppCompatActivity() {
     }
 
     private fun updatePeminjaman() {
-        val namaPeminjam = etNamaPeminjam.text.toString().trim()
-        val tanggalPinjam = etTanggalPinjam.text.toString().trim()
-        val tanggalKembali = etTanggalKembali.text.toString().trim()
-        val petugas = etPetugas.text.toString().trim()
-        val status = spinnerStatus.selectedItem.toString()
+        val namaPeminjam = binding.etNamaPeminjam.text.toString().trim()
+        val tanggalPinjam = binding.etTanggalPinjam.text.toString().trim()
+        val tanggalKembali = binding.etTanggalKembali.text.toString().trim()
+        val petugas = binding.etPetugas.text.toString().trim()
+        val status = binding.spinnerStatus.selectedItem.toString()
 
         if (namaPeminjam.isEmpty() || tanggalPinjam.isEmpty()) {
             Toast.makeText(this, "Nama Peminjam dan Tanggal Pinjam tidak boleh kosong", Toast.LENGTH_LONG).show()

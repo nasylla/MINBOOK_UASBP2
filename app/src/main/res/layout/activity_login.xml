@@ -30,6 +30,7 @@
             android:textStyle="bold"/>
 
         <EditText
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Masukkan username"
@@ -43,6 +44,7 @@
             android:textStyle="bold"/>
 
         <EditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Masukkan password"
@@ -57,12 +59,6 @@
             android:text="Continue"
             android:textAllCaps="false"
             android:backgroundTint="@color/blue_primary"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Simpan akun?"
-            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 

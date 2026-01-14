@@ -6,23 +6,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.minbook.databinding.ActivityPilihBukuBinding
 import com.example.minbook.db.Buku
 import com.example.minbook.db.BukuRepository
 import com.example.minbook.db.MinbookDatabase
 
 class PilihBukuActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: ActivityPilihBukuBinding
     private lateinit var pilihBukuAdapter: PilihBukuAdapter
     private lateinit var bukuViewModel: BukuViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pilih_buku)
+        binding = ActivityPilihBukuBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        recyclerView = findViewById(R.id.rvPilihBuku)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.rvPilihBuku.layoutManager = LinearLayoutManager(this)
 
         val onBukuSelected = { buku: Buku ->
             val resultIntent = Intent()
@@ -33,7 +33,7 @@ class PilihBukuActivity : AppCompatActivity() {
         }
 
         pilihBukuAdapter = PilihBukuAdapter(emptyList(), onBukuSelected)
-        recyclerView.adapter = pilihBukuAdapter
+        binding.rvPilihBuku.adapter = pilihBukuAdapter
 
         val database = MinbookDatabase.getDatabase(this)
         val repository = BukuRepository(database.bukuDao())
