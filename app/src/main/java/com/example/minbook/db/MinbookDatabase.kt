@@ -9,8 +9,8 @@ import androidx.room.RoomDatabase
 abstract class MinbookDatabase : RoomDatabase() {
 
     abstract fun bukuDao(): BukuDao
-    abstract fun peminjamanDao(): PeminjamanDao // Diaktifkan
-    // abstract fun userDao(): UserDao             // Akan ditambahkan nanti
+    abstract fun peminjamanDao(): PeminjamanDao
+    // abstract fun userDao(): UserDao
 
     companion object {
         @Volatile

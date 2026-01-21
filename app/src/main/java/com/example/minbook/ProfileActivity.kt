@@ -16,10 +16,8 @@ class ProfileActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra("LOGGED_IN_USER")
 
-        // Menampilkan nama pengguna yang login
         binding.tvAdminName.text = username
 
-        // Contoh ID statis, bisa diganti dengan data dari database
         binding.tvAdminId.text = "ID: ADM-${username?.uppercase()}"
 
         binding.ivBack.setOnClickListener {

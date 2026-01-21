@@ -13,25 +13,26 @@ class BukuViewModel(private val repository: BukuRepository) : ViewModel() {
 
     val semuaBuku: LiveData<List<Buku>> = repository.semuaBuku.asLiveData()
 
-    // Diperbaiki: Fungsi sekarang secara eksplisit mengembalikan Unit
     fun insert(buku: Buku) {
         viewModelScope.launch {
             repository.insert(buku)
         }
     }
 
-    // Diperbaiki: Fungsi sekarang secara eksplisit mengembalikan Unit
     fun update(buku: Buku) {
         viewModelScope.launch {
             repository.update(buku)
         }
     }
 
-    // Diperbaiki: Fungsi sekarang secara eksplisit mengembalikan Unit
     fun delete(buku: Buku) {
         viewModelScope.launch {
             repository.delete(buku)
         }
+    }
+
+    fun searchBuku(query: String): LiveData<List<Buku>> {
+        return repository.searchBuku(query).asLiveData()
     }
 }
 

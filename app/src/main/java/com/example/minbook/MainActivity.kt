@@ -16,10 +16,8 @@ class MainActivity : AppCompatActivity() {
 
         val username = intent.getStringExtra("LOGGED_IN_USER")
 
-        // Buat instance HomeFragment dengan menyertakan username
         val homeFragment = HomeFragment.newInstance(username ?: "Admin")
 
-        // Fragment default
         loadFragment(homeFragment)
 
         binding.bottomNav.setOnItemSelectedListener {

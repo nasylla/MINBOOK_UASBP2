@@ -35,18 +35,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize database
         db = MinbookDatabase.getDatabase(requireContext())
 
-        // Tampilkan username di TextView
-        binding.tvUsername.text = "Hi, $username"
+        binding.tvUsername.text = "Hi, ${username ?: "Admin"}"
 
-        // Observe book count
         db.bukuDao().getBukuCount().observe(viewLifecycleOwner, {
             bukuCount -> binding.tvJumlahBuku.text = bukuCount.toString()
         })
 
-        // Observe active peminjaman count
         db.peminjamanDao().getActivePeminjamanCount().observe(viewLifecycleOwner, {
             peminjamanCount -> binding.tvPeminjamanAktif.text = peminjamanCount.toString()
         })

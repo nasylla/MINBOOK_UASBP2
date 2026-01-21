@@ -12,7 +12,7 @@ import com.example.minbook.db.Buku
 
 class BukuAdapter(
     private var bukuList: List<Buku>,
-    private val onDeleteClick: (Buku) -> Unit // Lambda untuk aksi hapus
+    private val onDeleteClick: (Buku) -> Unit
 ) :
     RecyclerView.Adapter<BukuAdapter.BukuViewHolder>() {
 

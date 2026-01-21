@@ -10,7 +10,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 
-    // Daftar admin yang valid (username to password)
+    // Daftar admin (username to password)
     private val validAdmins = mapOf(
         "admin" to "admin",
         "nasylla" to "nasylla123",
@@ -27,16 +27,12 @@ class LoginActivity : AppCompatActivity() {
             val username = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            // Memeriksa apakah username ada di daftar dan apakah password cocok
             if (validAdmins.containsKey(username) && validAdmins[username] == password) {
-                // Jika valid, teruskan ke MainActivity
                 val intent = Intent(this, MainActivity::class.java)
-                // Anda bisa meneruskan nama pengguna ke activity berikutnya jika perlu
                 intent.putExtra("LOGGED_IN_USER", username)
                 startActivity(intent)
                 finish()
             } else {
-                // Jika tidak valid, tampilkan pesan error
                 Toast.makeText(this, "Username atau Password Salah", Toast.LENGTH_SHORT).show()
             }
         }

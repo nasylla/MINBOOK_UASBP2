@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PeminjamanDao {
 
-    // Query baru untuk menggabungkan Peminjaman dan Buku
     @Query("""
         SELECT 
             p.pinjamId, p.namaPeminjam, p.tanggalPinjam, p.tanggalKembali, p.status, p.petugas, p.bukuId,
@@ -36,5 +35,16 @@ interface PeminjamanDao {
 
     @Delete
     suspend fun deletePeminjaman(peminjaman: Peminjaman)
+
+    @Query("""
+        SELECT 
+            p.pinjamId, p.namaPeminjam, p.tanggalPinjam, p.tanggalKembali, p.status, p.petugas, p.bukuId,
+            b.judul, b.cover 
+        FROM peminjaman p
+        INNER JOIN buku b ON p.bukuId = b.id
+        WHERE p.namaPeminjam LIKE :query OR b.judul LIKE :query OR p.status LIKE :query
+        ORDER BY p.tanggalPinjam DESC
+    """)
+    fun searchPeminjaman(query: String): Flow<List<PeminjamanDetail>>
 
 }

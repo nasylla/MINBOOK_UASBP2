@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp">
 
@@ -19,7 +19,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:src="@drawable/logo_minbook"
-            android:layout_marginTop="80dp"/>
+            android:layout_marginTop="280dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,6 +27,7 @@
             android:text="Manage your library easily"
             android:textColor="@color/white"
             android:textSize="12sp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"/>
     </LinearLayout>
 

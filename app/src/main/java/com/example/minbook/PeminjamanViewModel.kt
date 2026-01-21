@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 
 class PeminjamanViewModel(private val repository: PeminjamanRepository) : ViewModel() {
 
-    // LiveData untuk mengambil detail peminjaman (hasil JOIN)
     val semuaPeminjamanDetail: LiveData<List<PeminjamanDetail>> = repository.semuaPeminjamanDetail.asLiveData()
 
     val semuaPeminjaman: LiveData<List<Peminjaman>> = repository.semuaPeminjaman.asLiveData()
@@ -33,6 +32,10 @@ class PeminjamanViewModel(private val repository: PeminjamanRepository) : ViewMo
         viewModelScope.launch {
             repository.delete(peminjaman)
         }
+    }
+
+    fun searchPeminjaman(query: String): LiveData<List<PeminjamanDetail>> {
+        return repository.searchPeminjaman(query).asLiveData()
     }
 }
 

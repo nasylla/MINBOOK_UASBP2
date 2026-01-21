@@ -2,6 +2,8 @@ package com.example.minbook
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +56,25 @@ class BukuFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val intent = Intent(activity, TambahBukuActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchBuku(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun searchBuku(query: String) {
+        val searchQuery = "%$query%"
+        bukuViewModel.searchBuku(searchQuery).observe(viewLifecycleOwner) { list ->
+            list?.let {
+                bukuAdapter.updateData(it)
+            }
         }
     }
 

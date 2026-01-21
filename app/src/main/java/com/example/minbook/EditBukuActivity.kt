@@ -104,7 +104,7 @@ class EditBukuActivity : AppCompatActivity() {
         }
 
         val updatedBuku = Buku(
-            id = currentBuku!!.id, // Penting: Gunakan ID yang sama
+            id = currentBuku!!.id,
             judul = judul,
             penulis = penulis,
             kategori = kategori,

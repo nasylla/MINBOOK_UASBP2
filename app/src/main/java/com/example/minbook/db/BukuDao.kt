@@ -26,4 +26,7 @@ interface BukuDao {
     @Delete
     suspend fun deleteBuku(buku: Buku)
 
+    @Query("SELECT * FROM buku WHERE judul LIKE :query OR penulis LIKE :query OR kategori LIKE :query")
+    fun searchBuku(query: String): Flow<List<Buku>>
+
 }
